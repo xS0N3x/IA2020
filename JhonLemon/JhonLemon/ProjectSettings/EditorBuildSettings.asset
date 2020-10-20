@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/main.unity
+    path: Assets/Scenes/Serxi.unity
     guid: 63d0376b847d90846b6a4847431bdb4d
   m_configObjects: {}
