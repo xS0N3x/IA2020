@@ -30,21 +30,17 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
-    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
     - UnityEngine.UI.Image
     com.unity.multiplayer-hlapi.Runtime.dll:
-    - UnityEngine.Networking.NetworkCallbacks
     - UnityEngine.Networking.NetworkIdentity
   sceneClasses:
-    Assets/Scenes/main.unity:
+    Assets/Scenes/Serxi.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
@@ -108,45 +104,45 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9910}
     - Class: 114
-      Script: {instanceID: 9992}
+      Script: {instanceID: 9940}
     - Class: 114
-      Script: {instanceID: 10024}
+      Script: {instanceID: 9994}
     - Class: 114
-      Script: {instanceID: 10036}
+      Script: {instanceID: 10026}
     - Class: 114
-      Script: {instanceID: 10200}
+      Script: {instanceID: 10038}
     - Class: 114
-      Script: {instanceID: 10238}
+      Script: {instanceID: 10202}
     - Class: 114
-      Script: {instanceID: 10280}
+      Script: {instanceID: 10240}
     - Class: 114
-      Script: {instanceID: 10628}
+      Script: {instanceID: 10282}
     - Class: 114
-      Script: {instanceID: 10828}
+      Script: {instanceID: 10630}
     - Class: 114
-      Script: {instanceID: 10964}
+      Script: {instanceID: 10714}
     - Class: 114
-      Script: {instanceID: 11008}
+      Script: {instanceID: 10832}
     - Class: 114
-      Script: {instanceID: 11060}
+      Script: {instanceID: 10968}
     - Class: 114
-      Script: {instanceID: 11378}
+      Script: {instanceID: 11012}
     - Class: 114
-      Script: {instanceID: 11530}
+      Script: {instanceID: 11064}
     - Class: 114
-      Script: {instanceID: 11572}
+      Script: {instanceID: 11382}
     - Class: 114
-      Script: {instanceID: 12106}
+      Script: {instanceID: 11534}
     - Class: 114
-      Script: {instanceID: 12152}
+      Script: {instanceID: 11576}
     - Class: 114
-      Script: {instanceID: 12224}
+      Script: {instanceID: 12110}
     - Class: 114
-      Script: {instanceID: 22768}
+      Script: {instanceID: 12156}
     - Class: 114
-      Script: {instanceID: 23054}
+      Script: {instanceID: 12228}
     - Class: 114
-      Script: {instanceID: 42092}
+      Script: {instanceID: 12322}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 135
@@ -278,6 +274,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: GroupTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 0f1977a7d51a5c5dee54d0932eea0adb
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Observer
   - hash:
       serializedVersion: 2
       Hash: a5781dc71a671b1ad2b38de19f24b71f
@@ -560,6 +562,12 @@ ScriptsOnlyBuild:
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
     className: CinemachinePOV
+  - hash:
+      serializedVersion: 2
+      Hash: 9a79b1fee2533091f6b597384d21cd98
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameEnding
   - hash:
       serializedVersion: 2
       Hash: 265cf27ba050d55ff33a8acab4ded6c0
@@ -1090,6 +1098,12 @@ ScriptsOnlyBuild:
     className: Slider
   - hash:
       serializedVersion: 2
+      Hash: 9a62527cf96c99811bbc76fe09736c81
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: WaypointPatrol
+  - hash:
+      serializedVersion: 2
       Hash: 0fd6822f6177297bd0eb4d83cc7a9030
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -1100,26 +1114,8 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 9a79b1fee2533091f6b597384d21cd98
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: GameEnding
-  - hash:
-      serializedVersion: 2
-      Hash: 0f1977a7d51a5c5dee54d0932eea0adb
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Observer
-  - hash:
-      serializedVersion: 2
-      Hash: 9a62527cf96c99811bbc76fe09736c81
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: WaypointPatrol
   platform: 5
   scenePathNames:
-  - Assets/Scenes/main.unity
+  - Assets/Scenes/Serxi.unity
   playerPath: C:/Users/alex/Documents/GitHub/JhonLemon/JhonLemon/Build/El paseo encantado
     de John Lemon.exe
