@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/piso2enEdicion.unity
+- path: Assets/Scenes/Borja.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
