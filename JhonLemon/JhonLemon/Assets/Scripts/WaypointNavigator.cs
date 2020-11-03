@@ -6,7 +6,7 @@ public class WaypointNavigator : MonoBehaviour
 {
     public float distanceToTargetThreshold = 0.5f;
 
-    public int minWaypoint, maxWaypoint;
+    public Waypoint waypoint1, waypoint2, waypoint3, waypoint4;
 
     private Dictionary<Waypoint, List<Waypoint>> graph;
     private Waypoint currentWaypoint;
@@ -89,9 +89,30 @@ public class WaypointNavigator : MonoBehaviour
                 // Reached target
                 Waypoint target = null;
                 while (!target || target == currentWaypoint) // Choose a new target, different from the current waypoint
-                    target = new List<Waypoint>(graph.Keys)[Random.Range(0, graph.Count)];
-                    /*if (maxWaypoint > graph.Count) { maxWaypoint = graph.Count; }
-                    target = new List<Waypoint>(graph.Keys)[Random.Range(minWaypoint, maxWaypoint)];*/
+                {
+                    //target = new List<Waypoint>(graph.Keys)[Random.Range(0, graph.Count)];
+                    int dice = Random.Range(0, 4);
+                    switch (dice)
+                    {
+                        case 0:
+                            target = waypoint1;
+                            break;
+                        case 1:
+                            target = waypoint2;
+                            break;
+                        case 2:
+                            target = waypoint3;
+                            break;
+                        case 3:
+                            target = waypoint4;
+                            break;
+                        default:
+                            //target = new List<Waypoint>(graph.Keys)[Random.Range(0, graph.Count)];
+                            Debug.Log("Wrong Waypoint");
+                            break;
+                    }
+                }
+         
                 pathToTarget = getPath(graph, currentWaypoint, target);
             }
 
