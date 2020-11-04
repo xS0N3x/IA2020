@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class Key : MonoBehaviour
 {
-    public bool pickedKey;
+    public bool pickedKey = false;
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.tag == "Player")
         {
             pickedKey = true;
-            Destroy(gameObject);
-        }
-        else if (collider.gameObject.tag == "Player" && pickedKey == true)
-        {
             Destroy(gameObject);
         }
     }

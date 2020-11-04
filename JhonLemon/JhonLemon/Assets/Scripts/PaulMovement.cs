@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PaulMovement : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class PaulMovement : MonoBehaviour
     public float slowDistance = 1f;
     public float turnSpeed = 20;
     public float minDistance = 1;
+    public int candyNumber = 0;
+    public Text candyDisplay;
+    public bool activePaul = false;
+    public bool caughtPaul = false;
+    public AudioSource paulSound;
 
     Quaternion m_Rotation = Quaternion.identity;
 
@@ -17,6 +23,7 @@ public class PaulMovement : MonoBehaviour
     Animator m_Animator;
 
     Vector3 velocity = Vector3.zero;
+    Vector3 playerDistance;
 
     GameObject player;
 
@@ -26,16 +33,33 @@ public class PaulMovement : MonoBehaviour
         player = GameObject.Find("JohnLemon");
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Animator = GetComponent<Animator>();
+        paulSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //Steering Behaviour
+        if (candyNumber > 0 && Input.GetKeyDown(KeyCode.Q))
+        {
+            candyNumber--;
+            candyDisplay.text = "Candy: " + candyNumber.ToString();
+            activePaul = true;
+            paulSound.Play();
 
-        Vector3 targetPosition = player.transform.position;
-        Vector3 playerDistance = targetPosition - transform.position;
+            
+        }
+        else if (activePaul == false)
+        {
+            Vector3 targetPosition = player.transform.position;
+            playerDistance = targetPosition - transform.position;
+            MovePaul();
+            paulSound.Stop();
+        }
+    }
 
+    void MovePaul()
+    {
         if (playerDistance.magnitude >= minDistance)
         {
             Vector3 desiredVelocity = playerDistance.normalized * followSpeed;
@@ -47,7 +71,8 @@ public class PaulMovement : MonoBehaviour
 
             m_Animator.SetBool("walking", true);
         }
-        else {
+        else
+        {
             velocity = Vector3.zero;
             m_Animator.SetBool("walking", false);
         }

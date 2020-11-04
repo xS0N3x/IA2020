@@ -8,18 +8,34 @@ public class Pathfinding : MonoBehaviour
     public Grid GridReference;
     public Transform StartPosition;
     public Transform TargetPosition;
+    public Transform PaulPosition;
+    private PaulMovement PaulActivation;
+
+    private void Awake()
+    {
+        PaulActivation = GameObject.FindObjectOfType<PaulMovement>();
+    }
 
     private void Update()
     {
-        FindPath(StartPosition.position, TargetPosition.position);
+        if (PaulActivation.activePaul == false)
+        {
+            FindPath(StartPosition.position, TargetPosition.position);
+            Vector3 direction = TargetPosition.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 10f * Time.deltaTime);
+        }
+        else
+        {
+            FindPath(StartPosition.position, PaulPosition.position);
+            Vector3 direction = PaulPosition.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 10f * Time.deltaTime);
+        }
         foreach (Node node in GridReference.FinalPath)
         {
-            transform.position = Vector3.Lerp(this.transform.position, node.vPosition, Time.deltaTime * 0.1f);
+            transform.position = Vector3.Lerp(this.transform.position, node.vPosition, Time.deltaTime * 0.05f);
         }
-
-        Vector3 direction = TargetPosition.position - transform.position;
-        Quaternion rotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 10f * Time.deltaTime);
     }
 
     void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
