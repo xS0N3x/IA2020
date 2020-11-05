@@ -7,7 +7,7 @@ public class SmartGhost : MonoBehaviour
     public Transform player;
     public Transform Paul;
     public GameEnding gameEnding;
-    public Rigidbody rigidBody;
+    //public Rigidbody rigidBody;
     public float speed = 4f;
 
     bool m_IsPlayerInRange;
@@ -20,7 +20,7 @@ public class SmartGhost : MonoBehaviour
         paulActive = GameObject.FindObjectOfType<PaulMovement>();
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (other.transform == player)
         {
@@ -71,7 +71,7 @@ public class SmartGhost : MonoBehaviour
             {
                 if (raycastHit.collider.transform == Paul && paulActive.activePaul == true)
                 {
-                    gameEnding.CaughtPlayer();
+                    //gameEnding.CaughtPlayer();
                     this.transform.position = raycastHit.point;
                     paulActive.activePaul = false;
                     paulActive.caughtPaul = true;
