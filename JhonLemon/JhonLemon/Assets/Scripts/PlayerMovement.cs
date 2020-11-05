@@ -12,6 +12,13 @@ public class PlayerMovement : MonoBehaviour
     Quaternion m_Rotation = Quaternion.identity;
     AudioSource m_AudioSource;
 
+    public float velocidadHorizontal = 0f;
+    public float velocidadVertical = 0f;
+    public float velocidadAnimacion = 0f;
+    public float incremento = 0.3f;
+    public float vel_max = 2f;
+    public float vel_base = 0.5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,13 +34,78 @@ public class PlayerMovement : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
+        if (horizontal > 0)
+        {
+            if (velocidadHorizontal > 0)
+            {
+                velocidadHorizontal += incremento * Time.deltaTime;
+                if (velocidadHorizontal > vel_max)
+                    velocidadHorizontal = vel_max;
+            }
+            else
+            {
+                velocidadHorizontal += vel_base;
+            }
+        }
+        else if (horizontal < 0)
+        {
+            if (velocidadHorizontal < 0)
+            {
+                velocidadHorizontal -= incremento * Time.deltaTime;
+                if (velocidadHorizontal < (vel_max * -1))
+                    velocidadHorizontal = (vel_max * -1);
+            }
+            else
+            {
+                velocidadHorizontal -= vel_base;
+            }
+        }
+        else {
+            
+            velocidadHorizontal = 0;
+        }
+        if (vertical > 0)
+        {
+            if (velocidadVertical > 0)
+            {
+                velocidadVertical += incremento * Time.deltaTime;
+                if (velocidadVertical > vel_max)
+                    velocidadVertical = vel_max;
+            }
+            else
+            {
+                velocidadVertical += vel_base;
+            }
+        }
+        else if (vertical < 0)
+        {
+            if (velocidadVertical < 0)
+            {
+                velocidadVertical -= incremento * Time.deltaTime;
+                if (velocidadVertical < (vel_max * -1))
+                    velocidadVertical = (vel_max * -1);
+            }
+            else
+            {
+                velocidadVertical -= vel_base;
+            }
+        }
+        else 
+        {
+            velocidadVertical = 0;
+        }
 
+        velocidadAnimacion = Mathf.Max(Mathf.Abs(velocidadHorizontal), Mathf.Abs(velocidadVertical));
 
-        m_Movement.Set(horizontal, 0f, vertical);
+        m_Movement.Set(velocidadHorizontal, 0f, velocidadVertical);
         m_Movement.Normalize();
 
-        bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
-        bool hasVerticalInput = !Mathf.Approximately(vertical, 0f);
+        m_Animator.SetFloat("multiplier", velocidadAnimacion);
+
+        m_AudioSource.volume = velocidadAnimacion * 0.5f;
+
+        bool hasHorizontalInput = !Mathf.Approximately(velocidadHorizontal, 0f);
+        bool hasVerticalInput = !Mathf.Approximately(velocidadVertical, 0f);
         bool isWalking = hasHorizontalInput || hasVerticalInput;
         m_Animator.SetBool("IsWalking", isWalking);
         if (isWalking)
