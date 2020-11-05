@@ -23,8 +23,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+
+
 
         m_Movement.Set(horizontal, 0f, vertical);
         m_Movement.Normalize();

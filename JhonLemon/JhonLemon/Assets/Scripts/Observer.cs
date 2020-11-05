@@ -6,11 +6,15 @@ public class Observer : MonoBehaviour
 {
     public Transform player;
     public GameEnding gameEnding;
+    public float turnSpeed = 10;
 
     private SkinnedMeshRenderer light;
     private Color lightColorCaught;
     private Color lightColorInitial;
     private Color lightColorChange;
+    private bool goingLeft;
+    Rigidbody m_Rigidbody;
+    Quaternion m_Rotation = Quaternion.identity;
 
     bool m_IsPlayerInRange;
 
@@ -21,6 +25,8 @@ public class Observer : MonoBehaviour
         lightColorInitial = Color.green;
         lightColorChange = lightColorInitial;
         light.materials[0].SetColor("_EmissionColor", lightColorInitial);
+        m_Rigidbody = transform.parent.GetComponent<Rigidbody>();
+        goingLeft = true;
     }
 
     void OnTriggerEnter(Collider other)
@@ -42,6 +48,7 @@ public class Observer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (lightColorChange.r >= 0.95)
         {
             gameEnding.CaughtPlayer();
@@ -67,4 +74,5 @@ public class Observer : MonoBehaviour
             light.materials[0].SetColor("_EmissionColor", lightColorChange);
         }
     }
+
 }

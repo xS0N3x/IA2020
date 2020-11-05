@@ -6,6 +6,11 @@ public class WaypointNavigator : MonoBehaviour
 {
     public float distanceToTargetThreshold = 0.5f;
 
+    public Vector3 velocity = Vector3.zero;
+    public float turnSpeed = 20;
+    public float speed = 2f;
+    Quaternion m_Rotation = Quaternion.identity;
+
     public Waypoint waypoint1, waypoint2, waypoint3, waypoint4;
 
     private Dictionary<Waypoint, List<Waypoint>> graph;
@@ -122,8 +127,27 @@ public class WaypointNavigator : MonoBehaviour
 
         }
 
+
+        /*Vector3 desiredVelocity = playerDistance.normalized * followSpeed;
+            Vector3 steering = desiredVelocity - velocity;
+
+            velocity += steering * Time.deltaTime;*/
+
+
         Vector3 direction = currentWaypoint.transform.position - transform.position;
-        transform.position += direction.normalized*2f * Time.deltaTime;
+
+
+        //Steering Behaviour
+        Vector3 desiredVelocity = direction.normalized * speed;
+        Vector3 steering = desiredVelocity - velocity;
+        velocity += steering * Time.deltaTime;
+
+        transform.position += velocity.normalized * Time.deltaTime;
+
+        //Rotation
+        Vector3 desiredForward = Vector3.RotateTowards(transform.forward, velocity, turnSpeed * Time.deltaTime, 0f);
+        m_Rotation = Quaternion.LookRotation(desiredForward);
+        RinGhostRB.MoveRotation(m_Rotation);
     }
 
     List<Waypoint> getPath(Dictionary<Waypoint, List<Waypoint>> graph, Waypoint start, Waypoint goal)
