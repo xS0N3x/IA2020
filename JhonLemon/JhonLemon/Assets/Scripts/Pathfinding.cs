@@ -34,7 +34,7 @@ public class Pathfinding : MonoBehaviour
         }
         foreach (Node node in GridReference.FinalPath)
         {
-            transform.position = Vector3.Lerp(this.transform.position, node.vPosition, Time.deltaTime * 0.05f);
+            transform.position = Vector3.Lerp(this.transform.position, node.vPosition, Time.deltaTime * 0.1f);
         }
     }
 

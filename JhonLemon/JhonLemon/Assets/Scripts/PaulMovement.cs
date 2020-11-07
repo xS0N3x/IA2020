@@ -15,6 +15,7 @@ public class PaulMovement : MonoBehaviour
     public bool activePaul = false;
     public bool caughtPaul = false;
     public AudioSource paulSound;
+    private SmartGhost audioAlert;
 
     Quaternion m_Rotation = Quaternion.identity;
 
@@ -26,6 +27,11 @@ public class PaulMovement : MonoBehaviour
     Vector3 playerDistance;
 
     GameObject player;
+
+    private void Awake()
+    {
+        audioAlert = GameObject.FindObjectOfType<SmartGhost>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +51,7 @@ public class PaulMovement : MonoBehaviour
             candyNumber--;
             candyDisplay.text = "Candy: " + candyNumber.ToString();
             activePaul = true;
+            audioAlert.AlertSound.Play();
             paulSound.Play();
 
             

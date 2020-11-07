@@ -6907,8 +6907,10 @@ MonoBehaviour:
   player: {fileID: 5717882084710347986}
   Paul: {fileID: 1093818066}
   gameEnding: {fileID: 983705080}
-  rigidBody: {fileID: 0}
   speed: 4
+  Patrol: {fileID: 0}
+  Pathfinder: {fileID: 0}
+  AlertSound: {fileID: 0}
 --- !u!136 &1836547204
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -7759,6 +7761,16 @@ PrefabInstance:
       propertyPath: StartPosition
       value: 
       objectReference: {fileID: 757339324}
+    - target: {fileID: 5454981410755944057, guid: 27d282c5d353512498e37e4c32c4ae72,
+        type: 3}
+      propertyPath: vGridWorldSize.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5454981410755944057, guid: 27d282c5d353512498e37e4c32c4ae72,
+        type: 3}
+      propertyPath: vGridWorldSize.y
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27d282c5d353512498e37e4c32c4ae72, type: 3}
 --- !u!4 &5717882084710347986 stripped

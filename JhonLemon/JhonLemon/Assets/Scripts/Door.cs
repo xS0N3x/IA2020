@@ -6,6 +6,16 @@ public class Door : MonoBehaviour
 {
     private Key keyState;
 
+    public GameObject door;
+
+    public AudioSource doorSound;
+
+    private void Start()
+    {
+        door.SetActive(false);
+        doorSound = GetComponent<AudioSource>();
+    }
+
     private void Awake()
     {
         keyState = GameObject.FindObjectOfType<Key>();
@@ -14,7 +24,9 @@ public class Door : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player" && keyState.pickedKey == true)
         {
-            Destroy(gameObject);
+            doorSound.Play();
+            gameObject.SetActive(false);
+            door.SetActive(true);
         }
     }
 }

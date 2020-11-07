@@ -21,6 +21,13 @@ public class WaypointNavigator : MonoBehaviour
 
     private Rigidbody RinGhostRB;
 
+    private PaulMovement paulCaught;
+
+    private void Awake()
+    {
+        paulCaught = GameObject.FindObjectOfType<PaulMovement>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -84,6 +91,12 @@ public class WaypointNavigator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (paulCaught.caughtPaul == true)
+        {
+            Start();
+            paulCaught.caughtPaul = false;
+        }
+
         float distanceToTarget = Vector3.Distance(transform.position, currentWaypoint.transform.position);
 
         if (distanceToTarget < distanceToTargetThreshold)
@@ -146,8 +159,10 @@ public class WaypointNavigator : MonoBehaviour
 
         //Rotation
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, velocity, turnSpeed * Time.deltaTime, 0f);
-        m_Rotation = Quaternion.LookRotation(desiredForward);
-        RinGhostRB.MoveRotation(m_Rotation);
+        //m_Rotation = Quaternion.LookRotation(desiredForward);
+        //RinGhostRB.MoveRotation(m_Rotation);
+        Quaternion rotation = Quaternion.LookRotation(desiredForward);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 20f * Time.deltaTime);
     }
 
     List<Waypoint> getPath(Dictionary<Waypoint, List<Waypoint>> graph, Waypoint start, Waypoint goal)
