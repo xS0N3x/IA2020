@@ -58,7 +58,7 @@ public class GameEnding : MonoBehaviour
         {
             if (doRestart)
             {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene("piso1enEdicion");
             }
             else
             {

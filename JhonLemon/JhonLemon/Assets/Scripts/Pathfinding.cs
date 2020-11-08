@@ -10,10 +10,14 @@ public class Pathfinding : MonoBehaviour
     public Transform TargetPosition;
     public Transform PaulPosition;
     private PaulMovement PaulActivation;
+    private WaypointNavigator comeBack;
+    private float Increment = 0f;
+    private Pathfinding path;
 
     private void Awake()
     {
         PaulActivation = GameObject.FindObjectOfType<PaulMovement>();
+        comeBack = GameObject.FindObjectOfType<WaypointNavigator>();
     }
 
     private void Update()
@@ -24,17 +28,16 @@ public class Pathfinding : MonoBehaviour
             Vector3 direction = TargetPosition.position - transform.position;
             Quaternion rotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 10f * Time.deltaTime);
+            /*if (PaulActivation.caughtPaul == true)
+            {
+                //comeBack.ComeBack(comeBack.AllWaypoints);
+                comeBack.enabled = true;
+                path.enabled = false;
+            }*/
         }
         else
         {
             FindPath(StartPosition.position, PaulPosition.position);
-            Vector3 direction = PaulPosition.position - transform.position;
-            Quaternion rotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 10f * Time.deltaTime);
-        }
-        foreach (Node node in GridReference.FinalPath)
-        {
-            transform.position = Vector3.Lerp(this.transform.position, node.vPosition, Time.deltaTime * 0.1f);
         }
     }
 
@@ -86,7 +89,6 @@ public class Pathfinding : MonoBehaviour
                     }
                 }
             }
-
         }
     }
 
@@ -105,6 +107,14 @@ public class Pathfinding : MonoBehaviour
 
         GridReference.FinalPath = FinalPath;
 
+        foreach (Node node in GridReference.FinalPath)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, FinalPath[0].vPosition, Time.deltaTime * 0.045f + Increment);
+            Vector3 direction = FinalPath[0].vPosition - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 0.5f * Time.deltaTime);
+        }
+        Increment += 0.00003f;
     }
 
     int GetManhattenDistance(Node a_nodeA, Node a_nodeB)

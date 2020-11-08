@@ -23,6 +23,8 @@ public class WaypointNavigator : MonoBehaviour
 
     private PaulMovement paulCaught;
 
+    public GameObject AllWaypoints;
+
     private void Awake()
     {
         paulCaught = GameObject.FindObjectOfType<PaulMovement>();
@@ -88,12 +90,34 @@ public class WaypointNavigator : MonoBehaviour
 
     }
 
+    public void ComeBack(GameObject waypoints)
+    {
+        int i = 0;
+        float minDistance = Mathf.Infinity;
+        Waypoint[] comebackPoints = new Waypoint[22];
+        foreach (Waypoint x in waypoints.GetComponentsInChildren<Waypoint>())
+        {
+            comebackPoints[i] = x;
+            i++;
+        }
+        foreach (Waypoint w in comebackPoints)
+        {
+            float distance = Vector3.Distance(transform.position, w.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                currentWaypoint = w;
+            }
+        }
+        pathToTarget = getPath(graph, currentWaypoint, currentWaypoint);
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (paulCaught.caughtPaul == true)
         {
-            Start();
+            ComeBack(AllWaypoints);
             paulCaught.caughtPaul = false;
         }
 
