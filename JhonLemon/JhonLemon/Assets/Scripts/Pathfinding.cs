@@ -8,37 +8,28 @@ public class Pathfinding : MonoBehaviour
     public Grid GridReference;
     public Transform StartPosition;
     public Transform TargetPosition;
+    //public Waypoint PatrolReset;
+    public SmartGhost SmartScript;
     public Transform PaulPosition;
     private PaulMovement PaulActivation;
     private WaypointNavigator comeBack;
     private float Increment = 0f;
     private Pathfinding path;
+    private WaypointNavigator WaypointNavigator;
 
     private void Awake()
     {
         PaulActivation = GameObject.FindObjectOfType<PaulMovement>();
         comeBack = GameObject.FindObjectOfType<WaypointNavigator>();
+        //PatrolReset = comeBack.waypoint1;
+        SmartScript = gameObject.transform.Find("PointOfView").GetComponent<SmartGhost>();
+        WaypointNavigator = GetComponent<WaypointNavigator>();
     }
 
     private void Update()
     {
-        if (PaulActivation.activePaul == false)
-        {
-            FindPath(StartPosition.position, TargetPosition.position);
-            Vector3 direction = TargetPosition.position - transform.position;
-            Quaternion rotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 10f * Time.deltaTime);
-            /*if (PaulActivation.caughtPaul == true)
-            {
-                //comeBack.ComeBack(comeBack.AllWaypoints);
-                comeBack.enabled = true;
-                path.enabled = false;
-            }*/
-        }
-        else
-        {
-            FindPath(StartPosition.position, PaulPosition.position);
-        }
+        Mario();
+        //Borja();
     }
 
     void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
@@ -124,4 +115,55 @@ public class Pathfinding : MonoBehaviour
 
         return ix + iy;
     }
+
+    void Mario() {
+        if (PaulActivation.activePaul == false)
+        {
+            if (SmartScript.m_IsPlayerInRange)
+            {
+                FindPath(StartPosition.position, TargetPosition.position);
+            }
+            else
+            {
+                SmartScript.Patrol.enabled = true;
+                SmartScript.Pathfinder.enabled = false;
+            }
+
+            Vector3 direction = TargetPosition.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 10f * Time.deltaTime);
+            /*if (PaulActivation.caughtPaul == true)
+            {
+                //comeBack.ComeBack(comeBack.AllWaypoints);
+                comeBack.enabled = true;
+                path.enabled = false;
+            }*/
+        }
+        else
+        {
+            FindPath(StartPosition.position, PaulPosition.position);
+        }
+    }
+
+    /*void Borja() {
+        if (PaulActivation.activePaul) {
+
+            //Find closest node to Paul
+            Waypoint[] waypoints = GameObject.FindObjectsOfType<Waypoint>();
+            Waypoint currentWaypoint;
+            float minDistance = Mathf.Infinity;
+            foreach (Waypoint w in waypoints)
+            {
+                float distance = Vector3.Distance(PaulPosition.position, w.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    currentWaypoint = w;
+                }
+            }
+            pathToTarget = getPath(graph, currentWaypoint, currentWaypoint);
+
+            paulCaught.caughtPaul = false;
+        }
+    }*/
 }

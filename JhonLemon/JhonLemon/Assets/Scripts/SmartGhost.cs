@@ -13,7 +13,7 @@ public class SmartGhost : MonoBehaviour
     public Pathfinding Pathfinder;
     public AudioSource AlertSound;
 
-    bool m_IsPlayerInRange;
+    public bool m_IsPlayerInRange;
     bool m_IsPaulInRange;
 
     private float patrolTime = 0f;
@@ -38,9 +38,12 @@ public class SmartGhost : MonoBehaviour
         if (other.transform == player)
         {
             m_IsPlayerInRange = true;
+            if (Patrol.enabled)
+            {
+                AlertSound.Play();
+            }
             Patrol.enabled = false;
             Pathfinder.enabled = true;
-            AlertSound.Play();
             patrolTime = 0;
         }
         else if (other.transform == Paul && paulActive.activePaul == true)
@@ -51,6 +54,12 @@ public class SmartGhost : MonoBehaviour
             Patrol.enabled = true;
             Pathfinder.enabled = false;
         }
+        /*else {
+            if (!paulActive.activePaul && patrolTime > 4) {
+                Patrol.enabled = true;
+                Pathfinder.enabled = false;
+            }
+        }*/
     }
 
     // Update is called once per frame
@@ -62,14 +71,21 @@ public class SmartGhost : MonoBehaviour
             if (patrolTime > 4)
             {
                 m_IsPlayerInRange = false;
-                Patrol.enabled = true;
                 Pathfinder.enabled = false;
+                Patrol.enabled = true;
+                
             }
         }
         if (paulActive.activePaul == true)
         {
-            Patrol.enabled = false;
-            Pathfinder.enabled = true;
+            //Patrol.enabled = false;
+            //Pathfinder.enabled = true;
+        }
+        if (paulActive.caughtPaul) {
+            Pathfinder.enabled = false;
+            Patrol.enabled = true;
+            //Patrol.ComeBack(Patrol.AllWaypoints);
+            //paulActive.caughtPaul = false;
         }
     }
 }

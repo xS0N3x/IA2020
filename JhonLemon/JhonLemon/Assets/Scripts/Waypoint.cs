@@ -8,4 +8,9 @@ public class Waypoint : MonoBehaviour
     public Waypoint[] adjacents;
 
     public bool autogenerateEdges = false;
+
+    private void Awake()
+    {
+        
+    }
 }

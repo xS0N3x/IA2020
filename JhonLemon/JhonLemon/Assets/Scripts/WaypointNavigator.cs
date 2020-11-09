@@ -14,8 +14,8 @@ public class WaypointNavigator : MonoBehaviour
     public Waypoint waypoint1, waypoint2, waypoint3, waypoint4;
 
     private Dictionary<Waypoint, List<Waypoint>> graph;
-    private Waypoint currentWaypoint;
-    private List<Waypoint> pathToTarget;
+    public Waypoint currentWaypoint;
+    public List<Waypoint> pathToTarget;
 
     private GameObject RinGhost;
 
@@ -24,6 +24,8 @@ public class WaypointNavigator : MonoBehaviour
     private PaulMovement paulCaught;
 
     public GameObject AllWaypoints;
+
+    Waypoint[] waypoints;
 
     private void Awake()
     {
@@ -38,7 +40,7 @@ public class WaypointNavigator : MonoBehaviour
         RinGhostRB = GetComponent<Rigidbody>();
 
         graph = new Dictionary<Waypoint, List<Waypoint>>();
-        Waypoint[] waypoints = GameObject.FindObjectsOfType<Waypoint>();
+        waypoints = GameObject.FindObjectsOfType<Waypoint>();
 
         // Construct the graph
         foreach (Waypoint w in waypoints)
@@ -90,16 +92,17 @@ public class WaypointNavigator : MonoBehaviour
 
     }
 
-    public void ComeBack(GameObject waypoints)
+    public void ComeBack(GameObject wayp)
     {
-        int i = 0;
+        /*int i = 0;
         float minDistance = Mathf.Infinity;
-        Waypoint[] comebackPoints = new Waypoint[22];
+        Waypoint[] comebackPoints = new Waypoint[24];
         foreach (Waypoint x in waypoints.GetComponentsInChildren<Waypoint>())
         {
             comebackPoints[i] = x;
             i++;
         }
+        //Waypoint[] comebackPoints = GameObject.FindObjectsOfType<Waypoint>();
         foreach (Waypoint w in comebackPoints)
         {
             float distance = Vector3.Distance(transform.position, w.transform.position);
@@ -109,17 +112,48 @@ public class WaypointNavigator : MonoBehaviour
                 currentWaypoint = w;
             }
         }
+        pathToTarget = getPath(graph, currentWaypoint, waypoint1);*/
+        float minDistance = Mathf.Infinity;
+        foreach (Waypoint w in waypoints)
+        {
+            float distance = Vector3.Distance(transform.position, w.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                currentWaypoint = w;
+            }
+        }
         pathToTarget = getPath(graph, currentWaypoint, currentWaypoint);
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
         if (paulCaught.caughtPaul == true)
         {
             ComeBack(AllWaypoints);
             paulCaught.caughtPaul = false;
+            
+
+            /*//Prueba
+            Waypoint[] waypoints = GameObject.FindObjectsOfType<Waypoint>();
+            float minDistance = Mathf.Infinity;
+            foreach (Waypoint w in waypoints)
+            {
+                float distance = Vector3.Distance(transform.position, w.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    currentWaypoint = w;
+                }
+            }
+            pathToTarget = getPath(graph, currentWaypoint, currentWaypoint);
+
+            paulCaught.caughtPaul = false;*/
         }
+        
 
         float distanceToTarget = Vector3.Distance(transform.position, currentWaypoint.transform.position);
 

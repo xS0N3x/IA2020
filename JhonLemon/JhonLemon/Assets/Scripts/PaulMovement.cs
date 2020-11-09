@@ -16,6 +16,15 @@ public class PaulMovement : MonoBehaviour
     public bool caughtPaul = false;
     public AudioSource paulSound;
     private SmartGhost audioAlert;
+    public Prueba ghostScript;
+    public Waypoint[] waypoints;
+    //public GameObject[] ghosts; 
+    public GameObject ghost1;
+    public GameObject ghost2;
+    public GameObject ghost3;
+    public GameObject nearestGhost;
+    public SmartGhost script;
+    public Waypoint nearestWaypoint;
 
     Quaternion m_Rotation = Quaternion.identity;
 
@@ -31,6 +40,7 @@ public class PaulMovement : MonoBehaviour
     private void Awake()
     {
         audioAlert = GameObject.FindObjectOfType<SmartGhost>();
+        //ghosts = GameObject.FindGameObjectsWithTag("Ghost");
     }
 
     // Start is called before the first frame update
@@ -40,6 +50,8 @@ public class PaulMovement : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Animator = GetComponent<Animator>();
         paulSound = GetComponent<AudioSource>();
+        waypoints = GameObject.FindObjectsOfType<Waypoint>();
+
     }
 
     // Update is called once per frame
@@ -48,16 +60,69 @@ public class PaulMovement : MonoBehaviour
         //Steering Behaviour
         if (candyNumber > 0 && Input.GetKeyDown(KeyCode.Q))
         {
+            //Find nearest Waypoint
+            float minDistance = Mathf.Infinity;
+            foreach (Waypoint w in waypoints)
+            {
+                float distance = Vector3.Distance(transform.position, w.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestWaypoint = w;
+                }
+            }
+
             candyNumber--;
             candyDisplay.text = "Candy: " + candyNumber.ToString();
             activePaul = true;
+            //SmartGhost script = nearestGhost.GetComponentInChildren<SmartGhost>();
+            script.Patrol.currentWaypoint = nearestWaypoint;
+            script.Patrol.pathToTarget.Clear();
+            script.Patrol.enabled = false;
+            script.Pathfinder.enabled = true; 
+            //nearestGhost.GetComponentInChildren<SmartGhost>().Patrol.enabled = false;
+            //nearestGhost.GetComponentInChildren<SmartGhost>().Pathfinder.enabled = true;
             audioAlert.AlertSound.Play();
             paulSound.Play();
 
-            
         }
         else if (activePaul == false)
         {
+
+            /*Debug.Log(ghosts);
+            //Find nearest GHost
+            float minDistance = Mathf.Infinity;
+            foreach (GameObject g in ghosts) {
+                float distanceToGhost = (g.transform.position - transform.position).magnitude;
+                if (distanceToGhost < minDistance) {
+                    minDistance = distanceToGhost;
+                    nearestGhost = g;
+                }
+            }*/
+            float minDistance = Mathf.Infinity;
+            float distanceToGhost;
+            for (int i = 0; i < 3; i++) {
+                if (i == 0) {
+                    distanceToGhost = (ghost1.transform.position - transform.position).magnitude;
+                }
+                else if (i == 1)
+                {
+                    distanceToGhost = (ghost2.transform.position - transform.position).magnitude;
+                }
+                else
+                {
+                    distanceToGhost = (ghost3.transform.position - transform.position).magnitude;
+                }
+                if (distanceToGhost < minDistance)
+                {
+                    minDistance = distanceToGhost;
+                    nearestGhost = ghost1;
+                }
+
+            }
+            script = nearestGhost.transform.Find("PointOfView").GetComponent<SmartGhost>();
+
+
             Vector3 targetPosition = player.transform.position;
             playerDistance = targetPosition - transform.position;
             MovePaul();
