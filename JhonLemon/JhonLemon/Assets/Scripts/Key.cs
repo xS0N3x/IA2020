@@ -10,7 +10,8 @@ public class Key : MonoBehaviour
         if (collider.gameObject.tag == "Player")
         {
             pickedKey = true;
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

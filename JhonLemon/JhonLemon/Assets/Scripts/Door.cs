@@ -24,6 +24,7 @@ public class Door : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player" && keyState.pickedKey == true)
         {
+            Debug.Log("Abrete sesamo");
             doorSound.Play();
             gameObject.SetActive(false);
             door.SetActive(true);
