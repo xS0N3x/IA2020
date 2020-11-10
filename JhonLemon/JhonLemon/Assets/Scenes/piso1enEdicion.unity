@@ -500,10 +500,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956c5da2b2dcc754396ee56d65e2ce83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnSpeed: 0.6
   facingRight: 0
   Posleft: {fileID: 161970828}
   Posright: {fileID: 1374363066}
-  turnSpeed: 0.6
 --- !u!1 &97333181
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,14 +586,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distanceToTargetThreshold: 0.5
-  velocity: {x: 0, y: 0, z: 0}
   turnSpeed: 20
   speed: 2.5
+  velocity: {x: 0, y: 0, z: 0}
+  AllWaypoints: {fileID: 568820050}
   waypoint1: {fileID: 863182927}
   waypoint2: {fileID: 410129995}
   waypoint3: {fileID: 1183607300}
   waypoint4: {fileID: 2020572594}
-  AllWaypoints: {fileID: 568820050}
+  currentWaypoint: {fileID: 0}
+  pathToTarget: []
 --- !u!114 &131591472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,8 +611,8 @@ MonoBehaviour:
   GridReference: {fileID: 673679117}
   StartPosition: {fileID: 131591477}
   TargetPosition: {fileID: 5717882084710347986}
-  SmartScript: {fileID: 0}
   PaulPosition: {fileID: 1699671176}
+  SmartScript: {fileID: 0}
 --- !u!82 &131591473
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1071,8 +1073,8 @@ MonoBehaviour:
   GridReference: {fileID: 673679117}
   StartPosition: {fileID: 225581317}
   TargetPosition: {fileID: 5717882084710347986}
-  SmartScript: {fileID: 0}
   PaulPosition: {fileID: 1699671176}
+  SmartScript: {fileID: 0}
 --- !u!4 &225581317 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8315756001063369432, guid: 99d71a790509e6a45a6bf3850b89bed5,
@@ -1283,14 +1285,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc5188782032134b8f92ee53389ad48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsPlayerInRange: 0
+  speed: 4
   player: {fileID: 5717882084710347986}
   Paul: {fileID: 1699671176}
   gameEnding: {fileID: 113504511}
-  speed: 4
   Patrol: {fileID: 1507442005}
   Pathfinder: {fileID: 1507442001}
   AlertSound: {fileID: 264929971}
-  m_IsPlayerInRange: 0
 --- !u!136 &264929970
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1890,8 +1892,8 @@ MonoBehaviour:
   GridReference: {fileID: 673679117}
   StartPosition: {fileID: 746480295}
   TargetPosition: {fileID: 5717882084710347986}
-  SmartScript: {fileID: 0}
   PaulPosition: {fileID: 1699671176}
+  SmartScript: {fileID: 0}
 --- !u!1001 &409733534
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2336,14 +2338,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc5188782032134b8f92ee53389ad48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsPlayerInRange: 0
+  speed: 4
   player: {fileID: 5717882084710347986}
   Paul: {fileID: 1699671176}
   gameEnding: {fileID: 113504511}
-  speed: 4
   Patrol: {fileID: 1703222864}
   Pathfinder: {fileID: 1703222863}
   AlertSound: {fileID: 0}
-  m_IsPlayerInRange: 0
 --- !u!82 &589505364
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3305,8 +3307,8 @@ MonoBehaviour:
   GridReference: {fileID: 673679117}
   StartPosition: {fileID: 841938330}
   TargetPosition: {fileID: 5717882084710347986}
-  SmartScript: {fileID: 0}
   PaulPosition: {fileID: 1699671176}
+  SmartScript: {fileID: 0}
 --- !u!114 &841938325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3320,14 +3322,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distanceToTargetThreshold: 0.5
-  velocity: {x: 0, y: 0, z: 0}
   turnSpeed: 20
   speed: 2.5
+  velocity: {x: 0, y: 0, z: 0}
+  AllWaypoints: {fileID: 568820050}
   waypoint1: {fileID: 648582552}
   waypoint2: {fileID: 1964113525}
   waypoint3: {fileID: 1650166233}
   waypoint4: {fileID: 1195329115}
-  AllWaypoints: {fileID: 568820050}
+  currentWaypoint: {fileID: 0}
+  pathToTarget: []
 --- !u!82 &841938326
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3650,7 +3654,7 @@ PrefabInstance:
     - target: {fileID: 6974435871229776351, guid: 99d71a790509e6a45a6bf3850b89bed5,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6974435871229776351, guid: 99d71a790509e6a45a6bf3850b89bed5,
         type: 3}
@@ -9887,8 +9891,8 @@ MonoBehaviour:
   GridReference: {fileID: 673679117}
   StartPosition: {fileID: 242689255}
   TargetPosition: {fileID: 5717882084710347986}
-  SmartScript: {fileID: 1273637889}
   PaulPosition: {fileID: 1699671176}
+  SmartScript: {fileID: 1273637889}
 --- !u!114 &913147509 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3673505281078234978, guid: 99d71a790509e6a45a6bf3850b89bed5,
@@ -10524,14 +10528,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc5188782032134b8f92ee53389ad48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsPlayerInRange: 0
+  speed: 4
   player: {fileID: 5717882084710347986}
   Paul: {fileID: 1699671176}
   gameEnding: {fileID: 113504511}
-  speed: 4
   Patrol: {fileID: 1752724284}
   Pathfinder: {fileID: 1752724283}
   AlertSound: {fileID: 0}
-  m_IsPlayerInRange: 0
 --- !u!82 &1050237037
 AudioSource:
   m_ObjectHideFlags: 0
@@ -10920,14 +10924,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc5188782032134b8f92ee53389ad48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsPlayerInRange: 0
+  speed: 4
   player: {fileID: 5717882084710347986}
   Paul: {fileID: 1699671176}
   gameEnding: {fileID: 113504511}
-  speed: 4
   Patrol: {fileID: 841938325}
   Pathfinder: {fileID: 841938324}
   AlertSound: {fileID: 1073357010}
-  m_IsPlayerInRange: 0
 --- !u!136 &1073357014
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -11726,14 +11730,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc5188782032134b8f92ee53389ad48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsPlayerInRange: 0
+  speed: 4
   player: {fileID: 5717882084710347986}
   Paul: {fileID: 1699671176}
   gameEnding: {fileID: 113504511}
-  speed: 4
   Patrol: {fileID: 131591471}
   Pathfinder: {fileID: 131591472}
   AlertSound: {fileID: 1186976729}
-  m_IsPlayerInRange: 0
 --- !u!136 &1186976733
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -12152,7 +12156,7 @@ PrefabInstance:
     - target: {fileID: 6974435871229776351, guid: 99d71a790509e6a45a6bf3850b89bed5,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6974435871229776351, guid: 99d71a790509e6a45a6bf3850b89bed5,
         type: 3}
@@ -12264,14 +12268,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fc5188782032134b8f92ee53389ad48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsPlayerInRange: 0
+  speed: 4
   player: {fileID: 5717882084710347986}
   Paul: {fileID: 1699671176}
   gameEnding: {fileID: 113504511}
-  speed: 4
   Patrol: {fileID: 913147509}
   Pathfinder: {fileID: 913147508}
   AlertSound: {fileID: 0}
-  m_IsPlayerInRange: 0
 --- !u!82 &1273637893
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13105,7 +13109,7 @@ PrefabInstance:
     - target: {fileID: 6974435871229776351, guid: 99d71a790509e6a45a6bf3850b89bed5,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6974435871229776351, guid: 99d71a790509e6a45a6bf3850b89bed5,
         type: 3}
@@ -13220,8 +13224,8 @@ MonoBehaviour:
   GridReference: {fileID: 673679117}
   StartPosition: {fileID: 1507442006}
   TargetPosition: {fileID: 5717882084710347986}
-  SmartScript: {fileID: 0}
   PaulPosition: {fileID: 1699671176}
+  SmartScript: {fileID: 0}
 --- !u!82 &1507442002
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13361,14 +13365,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distanceToTargetThreshold: 0.5
-  velocity: {x: 0, y: 0, z: 0}
   turnSpeed: 20
   speed: 2.5
+  velocity: {x: 0, y: 0, z: 0}
+  AllWaypoints: {fileID: 568820050}
   waypoint1: {fileID: 1563108044}
   waypoint2: {fileID: 1117874673}
   waypoint3: {fileID: 116943677}
   waypoint4: {fileID: 304842966}
-  AllWaypoints: {fileID: 568820050}
+  currentWaypoint: {fileID: 0}
+  pathToTarget: []
 --- !u!4 &1507442006 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400006, guid: 563ac48ff656d49478fd93213f4c0eb8,
@@ -13608,10 +13614,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956c5da2b2dcc754396ee56d65e2ce83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnSpeed: 0.6
   facingRight: 0
   Posleft: {fileID: 1631360336}
   Posright: {fileID: 2046066546}
-  turnSpeed: 0.6
 --- !u!54 &1582362163
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13894,8 +13900,8 @@ MonoBehaviour:
   GridReference: {fileID: 673679117}
   StartPosition: {fileID: 1703222862}
   TargetPosition: {fileID: 5717882084710347986}
-  SmartScript: {fileID: 589505363}
   PaulPosition: {fileID: 1699671176}
+  SmartScript: {fileID: 589505363}
 --- !u!114 &1703222864 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3673505281078234978, guid: 99d71a790509e6a45a6bf3850b89bed5,
@@ -14102,8 +14108,8 @@ MonoBehaviour:
   GridReference: {fileID: 673679117}
   StartPosition: {fileID: 1752724282}
   TargetPosition: {fileID: 5717882084710347986}
-  SmartScript: {fileID: 1050237036}
   PaulPosition: {fileID: 1699671176}
+  SmartScript: {fileID: 1050237036}
 --- !u!114 &1752724284 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3673505281078234978, guid: 99d71a790509e6a45a6bf3850b89bed5,
@@ -14553,10 +14559,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956c5da2b2dcc754396ee56d65e2ce83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnSpeed: 0.6
   facingRight: 0
   Posleft: {fileID: 503358770}
   Posright: {fileID: 1328891154}
-  turnSpeed: 0.6
 --- !u!54 &1882696905
 Rigidbody:
   m_ObjectHideFlags: 0

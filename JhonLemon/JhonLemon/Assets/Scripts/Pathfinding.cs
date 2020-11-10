@@ -8,28 +8,22 @@ public class Pathfinding : MonoBehaviour
     public Grid GridReference;
     public Transform StartPosition;
     public Transform TargetPosition;
-    //public Waypoint PatrolReset;
-    public SmartGhost SmartScript;
     public Transform PaulPosition;
+    public SmartGhost SmartScript;
+
     private PaulMovement PaulActivation;
     private WaypointNavigator comeBack;
     private float Increment = 0f;
-    private Pathfinding path;
-    private WaypointNavigator WaypointNavigator;
 
     private void Awake()
     {
         PaulActivation = GameObject.FindObjectOfType<PaulMovement>();
-        comeBack = GameObject.FindObjectOfType<WaypointNavigator>();
-        //PatrolReset = comeBack.waypoint1;
         SmartScript = gameObject.transform.Find("PointOfView").GetComponent<SmartGhost>();
-        WaypointNavigator = GetComponent<WaypointNavigator>();
     }
 
     private void Update()
     {
-        Mario();
-        //Borja();
+        Pathfind();
     }
 
     void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
@@ -83,7 +77,7 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-    void GetFinalPath(Node a_StartingNode, Node a_EndNode)
+    void GetFinalPath(Node a_StartingNode, Node a_EndNode) 
     {
         List<Node> FinalPath = new List<Node>();
         Node CurrentNode = a_EndNode;
@@ -116,54 +110,27 @@ public class Pathfinding : MonoBehaviour
         return ix + iy;
     }
 
-    void Mario() {
-        if (PaulActivation.activePaul == false)
+    void Pathfind() {
+        if (PaulActivation.activePaul == false)//If Paul isn't active
         {
-            if (SmartScript.m_IsPlayerInRange)
+            if (SmartScript.m_IsPlayerInRange)// If Player is in range
             {
-                FindPath(StartPosition.position, TargetPosition.position);
+                FindPath(StartPosition.position, TargetPosition.position); // Go to player
             }
-            else
+            else //Return to patrol behaviour
             {
                 SmartScript.Patrol.enabled = true;
                 SmartScript.Pathfinder.enabled = false;
             }
 
+            //Look towards direction
             Vector3 direction = TargetPosition.position - transform.position;
             Quaternion rotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 10f * Time.deltaTime);
-            /*if (PaulActivation.caughtPaul == true)
-            {
-                //comeBack.ComeBack(comeBack.AllWaypoints);
-                comeBack.enabled = true;
-                path.enabled = false;
-            }*/
         }
-        else
+        else //If Paul is active
         {
-            FindPath(StartPosition.position, PaulPosition.position);
+            FindPath(StartPosition.position, PaulPosition.position); //Go to Paul
         }
     }
-
-    /*void Borja() {
-        if (PaulActivation.activePaul) {
-
-            //Find closest node to Paul
-            Waypoint[] waypoints = GameObject.FindObjectsOfType<Waypoint>();
-            Waypoint currentWaypoint;
-            float minDistance = Mathf.Infinity;
-            foreach (Waypoint w in waypoints)
-            {
-                float distance = Vector3.Distance(PaulPosition.position, w.transform.position);
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    currentWaypoint = w;
-                }
-            }
-            pathToTarget = getPath(graph, currentWaypoint, currentWaypoint);
-
-            paulCaught.caughtPaul = false;
-        }
-    }*/
 }

@@ -3,25 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SmartGhost : MonoBehaviour
-{
+public class SmartGhost : MonoBehaviour { //Manages the Ghost State between Patrol and Pathfind
+
+    public bool m_IsPlayerInRange;
+    public float speed = 4f;
     public Transform player;
     public Transform Paul;
     public GameEnding gameEnding;
-    public float speed = 4f;
     public WaypointNavigator Patrol;
     public Pathfinding Pathfinder;
     public AudioSource AlertSound;
-
-    public bool m_IsPlayerInRange;
+   
     bool m_IsPaulInRange;
-
     private float patrolTime = 0f;
     private float seconds = 1f;
+    private PaulMovement scriptPaul;
 
-    private PaulMovement paulActive;
-
-    private void Start()
+    private void Start() //Starts Patrol behaviour
     {
         Patrol.enabled = true;
         Pathfinder.enabled = false;
@@ -30,62 +28,63 @@ public class SmartGhost : MonoBehaviour
 
     private void Awake()
     {
-        paulActive = GameObject.FindObjectOfType<PaulMovement>();
+        scriptPaul = GameObject.FindObjectOfType<PaulMovement>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) //FieldOfView
     {
-        if (other.transform == player)
+        if (other.transform == player) //If player is detected changes from Patrol to Pathfind
         {
             m_IsPlayerInRange = true;
+
             if (Patrol.enabled)
             {
                 AlertSound.Play();
             }
-            Patrol.enabled = false;
-            Pathfinder.enabled = true;
-            patrolTime = 0;
+
+            FromPatrolToPathFind();
+
+            patrolTime = 0; //resets patrol timer
         }
-        else if (other.transform == Paul && paulActive.activePaul == true)
+        else if (other.transform == Paul && scriptPaul.activePaul == true) //If Paul is detected and is active, it is defused and return to Patrol behaviour
         {
             m_IsPaulInRange = true;
-            paulActive.activePaul = false;
-            paulActive.caughtPaul = true;
-            Patrol.enabled = true;
-            Pathfinder.enabled = false;
+            DefusePaul();
+            FromPathfindToPatrol();
         }
-        /*else {
-            if (!paulActive.activePaul && patrolTime > 4) {
-                Patrol.enabled = true;
-                Pathfinder.enabled = false;
-            }
-        }*/
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (m_IsPlayerInRange)
+        if (m_IsPlayerInRange) //If player is in range
         {
             patrolTime += seconds * Time.deltaTime;
-            if (patrolTime > 4)
+
+            if (patrolTime > 4) //If player is undetected for more than 4 secs
             {
                 m_IsPlayerInRange = false;
-                Pathfinder.enabled = false;
-                Patrol.enabled = true;
+                FromPathfindToPatrol();
                 
             }
         }
-        if (paulActive.activePaul == true)
-        {
-            //Patrol.enabled = false;
-            //Pathfinder.enabled = true;
+        if (scriptPaul.caughtPaul) { //If Paul had been defused
+            FromPathfindToPatrol();
         }
-        if (paulActive.caughtPaul) {
-            Pathfinder.enabled = false;
-            Patrol.enabled = true;
-            //Patrol.ComeBack(Patrol.AllWaypoints);
-            //paulActive.caughtPaul = false;
-        }
+    }
+
+    void FromPatrolToPathFind() {
+        Patrol.enabled = false;
+        Pathfinder.enabled = true;
+    }
+
+    void FromPathfindToPatrol() {
+        Pathfinder.enabled = false;
+        Patrol.enabled = true;
+    }
+    void DefusePaul()
+    {
+        scriptPaul.activePaul = false;
+        scriptPaul.caughtPaul = true;
     }
 }

@@ -5,26 +5,19 @@ using UnityEngine;
 public class WaypointNavigator : MonoBehaviour
 {
     public float distanceToTargetThreshold = 0.5f;
-
-    public Vector3 velocity = Vector3.zero;
     public float turnSpeed = 20;
     public float speed = 2f;
-    Quaternion m_Rotation = Quaternion.identity;
-
+    public Vector3 velocity = Vector3.zero;
+    public GameObject AllWaypoints;
     public Waypoint waypoint1, waypoint2, waypoint3, waypoint4;
-
-    private Dictionary<Waypoint, List<Waypoint>> graph;
     public Waypoint currentWaypoint;
+    Waypoint target;
     public List<Waypoint> pathToTarget;
 
-    private GameObject RinGhost;
-
-    private Rigidbody RinGhostRB;
-
+    private Dictionary<Waypoint, List<Waypoint>> graph;
     private PaulMovement paulCaught;
 
-    public GameObject AllWaypoints;
-
+    Quaternion m_Rotation = Quaternion.identity;
     Waypoint[] waypoints;
 
     private void Awake()
@@ -35,10 +28,19 @@ public class WaypointNavigator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        RinGhost = GetComponent<Transform>().gameObject; //provisional
 
-        RinGhostRB = GetComponent<Rigidbody>();
+        ConstructGraph();
 
+        FindNearestWaypoint();
+        
+        // Select nearest node as target and build path towards it
+        Waypoint target = null;
+        target = currentWaypoint;
+        pathToTarget = getPath(graph, currentWaypoint, target);
+
+    }
+
+    void ConstructGraph() {
         graph = new Dictionary<Waypoint, List<Waypoint>>();
         waypoints = GameObject.FindObjectsOfType<Waypoint>();
 
@@ -55,7 +57,6 @@ public class WaypointNavigator : MonoBehaviour
                             other.transform.position - w.transform.position,
                             Vector3.Distance(w.transform.position, other.transform.position)))
                     {
-
                         edges.Add(other);
                     }
                 }
@@ -69,7 +70,9 @@ public class WaypointNavigator : MonoBehaviour
             }
             graph.Add(w, edges);
         }
+    }
 
+    void FindNearestWaypoint() {
         // Find nearest waypoint to start with
         float minDistance = Mathf.Infinity;
         foreach (Waypoint w in waypoints)
@@ -81,48 +84,12 @@ public class WaypointNavigator : MonoBehaviour
                 currentWaypoint = w;
             }
         }
-
-        
-        // Select random node as target and build path towards it
-        Waypoint target = null;
-        /*while (!target || target == currentWaypoint)
-            target = waypoints[Random.Range(0, waypoints.Length)];*/
-        target = currentWaypoint;
-        pathToTarget = getPath(graph, currentWaypoint, target);
-
     }
 
-    public void ComeBack(GameObject wayp)
+    public void ComeBack() //When target reached pathes back using the waypoints
     {
-        /*int i = 0;
-        float minDistance = Mathf.Infinity;
-        Waypoint[] comebackPoints = new Waypoint[24];
-        foreach (Waypoint x in waypoints.GetComponentsInChildren<Waypoint>())
-        {
-            comebackPoints[i] = x;
-            i++;
-        }
-        //Waypoint[] comebackPoints = GameObject.FindObjectsOfType<Waypoint>();
-        foreach (Waypoint w in comebackPoints)
-        {
-            float distance = Vector3.Distance(transform.position, w.transform.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                currentWaypoint = w;
-            }
-        }
-        pathToTarget = getPath(graph, currentWaypoint, waypoint1);*/
-        float minDistance = Mathf.Infinity;
-        foreach (Waypoint w in waypoints)
-        {
-            float distance = Vector3.Distance(transform.position, w.transform.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                currentWaypoint = w;
-            }
-        }
+
+        FindNearestWaypoint();
         pathToTarget = getPath(graph, currentWaypoint, currentWaypoint);
 
     }
@@ -131,62 +98,26 @@ public class WaypointNavigator : MonoBehaviour
     void Update()
     {
 
-        if (paulCaught.caughtPaul == true)
+        if (paulCaught.caughtPaul == true) //If Paul had been defused
         {
-            ComeBack(AllWaypoints);
+            ComeBack();
             paulCaught.caughtPaul = false;
             
-
-            /*//Prueba
-            Waypoint[] waypoints = GameObject.FindObjectsOfType<Waypoint>();
-            float minDistance = Mathf.Infinity;
-            foreach (Waypoint w in waypoints)
-            {
-                float distance = Vector3.Distance(transform.position, w.transform.position);
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    currentWaypoint = w;
-                }
-            }
-            pathToTarget = getPath(graph, currentWaypoint, currentWaypoint);
-
-            paulCaught.caughtPaul = false;*/
         }
         
 
-        float distanceToTarget = Vector3.Distance(transform.position, currentWaypoint.transform.position);
+        float distanceToTarget = Vector3.Distance(transform.position, currentWaypoint.transform.position); //Distance to next waypoint
 
         if (distanceToTarget < distanceToTargetThreshold)
         { // If the waypoint has been reached
           // Find next waypoint
-            if (pathToTarget.Count == 0)
+            if (pathToTarget.Count == 0) //If path completed finds next path between asigned waypoints
             {
                 // Reached target
-                Waypoint target = null;
+                target = null;
                 while (!target || target == currentWaypoint) // Choose a new target, different from the current waypoint
                 {
-                    //target = new List<Waypoint>(graph.Keys)[Random.Range(0, graph.Count)];
-                    int dice = Random.Range(0, 4);
-                    switch (dice)
-                    {
-                        case 0:
-                            target = waypoint1;
-                            break;
-                        case 1:
-                            target = waypoint2;
-                            break;
-                        case 2:
-                            target = waypoint3;
-                            break;
-                        case 3:
-                            target = waypoint4;
-                            break;
-                        default:
-                            //target = new List<Waypoint>(graph.Keys)[Random.Range(0, graph.Count)];
-                            Debug.Log("Wrong Waypoint");
-                            break;
-                    }
+                    FindDiferentTarget();
                 }
          
                 pathToTarget = getPath(graph, currentWaypoint, target);
@@ -198,15 +129,11 @@ public class WaypointNavigator : MonoBehaviour
 
         }
 
+        MoveGhost();
+    }
 
-        /*Vector3 desiredVelocity = playerDistance.normalized * followSpeed;
-            Vector3 steering = desiredVelocity - velocity;
-
-            velocity += steering * Time.deltaTime;*/
-
-
+    void MoveGhost() {
         Vector3 direction = currentWaypoint.transform.position - transform.position;
-
 
         //Steering Behaviour
         Vector3 desiredVelocity = direction.normalized * speed;
@@ -217,12 +144,31 @@ public class WaypointNavigator : MonoBehaviour
 
         //Rotation
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, velocity, turnSpeed * Time.deltaTime, 0f);
-        //m_Rotation = Quaternion.LookRotation(desiredForward);
-        //RinGhostRB.MoveRotation(m_Rotation);
         Quaternion rotation = Quaternion.LookRotation(desiredForward);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 20f * Time.deltaTime);
     }
 
+    void FindDiferentTarget() {
+        int dice = Random.Range(0, 4);
+        switch (dice)
+        {
+            case 0:
+                target = waypoint1;
+                break;
+            case 1:
+                target = waypoint2;
+                break;
+            case 2:
+                target = waypoint3;
+                break;
+            case 3:
+                target = waypoint4;
+                break;
+            default:
+                Debug.Log("Wrong Waypoint");
+                break;
+        }
+    }
     List<Waypoint> getPath(Dictionary<Waypoint, List<Waypoint>> graph, Waypoint start, Waypoint goal)
     {
         SortedList<float, Waypoint> frontier = new SortedList<float, Waypoint>();
@@ -276,6 +222,6 @@ public class WaypointNavigator : MonoBehaviour
         }
         path.Reverse();
         return path;
-    }
+    } 
 
 }

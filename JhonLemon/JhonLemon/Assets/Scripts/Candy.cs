@@ -5,19 +5,19 @@ using UnityEngine.UI;
 
 public class Candy : MonoBehaviour
 {
-    private PaulMovement candyNum;
+    private PaulMovement paulScript;
 
     private void Awake()
     {
-        candyNum = GameObject.FindObjectOfType<PaulMovement>();
+        paulScript = GameObject.FindObjectOfType<PaulMovement>();
     }
 
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.tag == "Player")
         {
-            candyNum.candyNumber++;
-            candyNum.candyDisplay.text = "Candy: " + candyNum.candyNumber.ToString();
+            paulScript.candyNumber++;
+            paulScript.candyDisplay.text = "Candy: " + paulScript.candyNumber.ToString();
             Destroy(gameObject);
         }
     }
